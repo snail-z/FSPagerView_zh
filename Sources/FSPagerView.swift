@@ -192,6 +192,21 @@ open class FSPagerView: UIView,UICollectionViewDataSource,UICollectionViewDelega
         }
     }
     
+    @objc
+    public enum LockDirection: Int {
+        case none = 0
+        case horizontal = 1
+        case vertical = 2
+    }
+    
+    /// 锁定方向，解决与外部滚动手势同时响应问题
+    @objc
+    open var lockDirection: LockDirection = .none {
+        didSet {
+            collectionView.lockDirection = lockDirection
+        }
+    }
+    
     // MARK: - Public readonly-properties
     
     /// Returns whether the user has touched the content to initiate scrolling.

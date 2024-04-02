@@ -63,4 +63,20 @@ class FSPagerCollectionView: UICollectionView {
         #endif
     }
     
+    internal var lockDirection: FSPagerView.LockDirection = .none
+}
+
+extension FSPagerCollectionView: UIGestureRecognizerDelegate {
+    
+    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard let pan = gestureRecognizer as? UIPanGestureRecognizer else { return true }
+        let velocity = pan.velocity(in: self)
+        switch lockDirection {
+        case .none: return true
+        case .horizontal:
+            return (abs(velocity.x) > abs(velocity.y))
+        case .vertical:
+            return (abs(velocity.y) > abs(velocity.x))
+        }
+    }
 }
