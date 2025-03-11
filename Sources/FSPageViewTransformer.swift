@@ -248,9 +248,20 @@ open class FSPagerViewTransformer: NSObject {
             return pagerView.itemSize.width * -self.minimumScale * 0.6
         case .linear:
             guard scrollDirection == .horizontal else {
-                return 0
+                return pagerView.interitemSpacing
             }
-            return pagerView.itemSize.width * -self.minimumScale * 0.2
+//            return pagerView.itemSize.width * -self.minimumScale * 0.2
+            
+            if self.minimumScale < 1 {
+                let scaledWidth = pagerView.itemSize.width * self.minimumScale
+                let quitsSpacing = (pagerView.itemSize.width - scaledWidth) * 0.5 * -1
+                // 使用外部interitemSpacing
+                return quitsSpacing + pagerView.interitemSpacing
+//                // 抵消间距
+//                return quitsSpacing
+            } else {
+                return pagerView.interitemSpacing
+            }
         case .coverFlow:
             guard scrollDirection == .horizontal else {
                 return 0
@@ -268,6 +279,4 @@ open class FSPagerViewTransformer: NSObject {
         }
         return pagerView.interitemSpacing
     }
-    
 }
-
